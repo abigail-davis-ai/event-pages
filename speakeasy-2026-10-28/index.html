@@ -462,7 +462,7 @@ initLiveCapacity();
   var note=document.createElement('div');
   note.setAttribute('role','status');
   note.style.cssText='margin:0 0 14px;padding:12px 14px;border:1px solid currentColor;border-radius:6px;font-size:0.95rem;line-height:1.45;opacity:0.95;';
-  note.innerHTML='<strong>This event is full.</strong> Join the waitlist below &mdash; <strong>no payment now</strong>. If a spot opens, Abigail will contact you for payment.';
+  note.innerHTML='<strong>We\'re sold out!</strong> We\'re actively working to secure more spots &mdash; please join the waitlist below (<strong>no payment now</strong>). If a spot opens, Abigail will contact you directly for payment.';
   note.hidden=true; btn.parentNode.insertBefore(note,btn);
   var busy=false, done=false;
   function full(){ return /waitlist only/i.test(badge.textContent||''); }
