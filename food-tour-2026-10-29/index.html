@@ -111,7 +111,7 @@ footer a { color: var(--teal); }
 <div class="wrap">
 
 <section id="details">
-  <span class="status-badge" id="spotsBadge">16 spots left</span>
+  <span class="status-badge" id="spotsBadge">16 tickets left</span>
   <h2>A guided walking tour through the city's best bites</h2>
   <p>A guided food tour through some of New Orleans' best stops — a great way to close out the trip.</p>
   <dl class="details-grid">
@@ -163,7 +163,7 @@ footer a { color: var(--teal); }
 <script>
 const EVENT = {
   name: "Taste of New Orleans Food Tour", noteLabel: "Food Tour Oct 29",
-  priceEach: 99, capacity: 16,
+  priceEach: 99, capacity: 16, unitWord: "tickets",
   venmoHandle: "Abigail-Davis-10", contactEmail: "abigail.davis@compass.com",
   slug: "food-tour-2026-10-29",
 };
@@ -184,7 +184,7 @@ function remaining() { return Math.max(spotsLeft, 0); }
 function renderCapacity() {
   const left = remaining();
   if (left <= 0 && !reservedFor) { spotsBadge.textContent = 'Waitlist only'; submitBtn.disabled = true; submitBtn.textContent = 'Full — join waitlist by email'; }
-  else { spotsBadge.textContent = left + (liveCountWorks ? ' spots left' : ' spots left (est.)'); submitBtn.disabled = false; submitBtn.textContent = "Continue to payment"; }
+  else { spotsBadge.textContent = left + ' ' + EVENT.unitWord + (liveCountWorks ? ' left' : ' left (est.)'); submitBtn.disabled = false; submitBtn.textContent = "Continue to payment"; }
   if (!reservedFor) { Array.from(guestsSelect.options).forEach(opt => { opt.disabled = parseInt(opt.value, 10) > Math.max(left, 1); }); }
   updateTotal();
 }

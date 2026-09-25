@@ -111,7 +111,7 @@ footer a { color: var(--teal); }
 <div class="wrap">
 
 <section id="details">
-  <span class="status-badge" id="spotsBadge">5 spots left</span>
+  <span class="status-badge" id="spotsBadge">5 seats left</span>
   <h2>A relaxed lunch at Emeril Lagasse's Warehouse District spot</h2>
   <p>Small-group lunch at Meril, Emeril Lagasse's casual New Orleans restaurant. Seats are limited, so RSVP early.</p>
   <dl class="details-grid">
@@ -154,7 +154,7 @@ footer a { color: var(--teal); }
 <script>
 const EVENT = {
   name: "Lunch at Meril", noteLabel: "Meril Lunch Oct 27",
-  priceEach: 0, capacity: 5,
+  priceEach: 0, capacity: 5, unitWord: "seats",
   venmoHandle: "Abigail-Davis-10", contactEmail: "abigail.davis@compass.com",
   slug: "meril-lunch-2026-10-27",
 };
@@ -175,7 +175,7 @@ function remaining() { return Math.max(spotsLeft, 0); }
 function renderCapacity() {
   const left = remaining();
   if (left <= 0 && !reservedFor) { spotsBadge.textContent = 'Waitlist only'; submitBtn.disabled = true; submitBtn.textContent = 'Full — join waitlist by email'; }
-  else { spotsBadge.textContent = left + (liveCountWorks ? ' spots left' : ' spots left (est.)'); submitBtn.disabled = false; submitBtn.textContent = "RSVP"; }
+  else { spotsBadge.textContent = left + ' ' + EVENT.unitWord + (liveCountWorks ? ' left' : ' left (est.)'); submitBtn.disabled = false; submitBtn.textContent = "RSVP"; }
   if (!reservedFor) { Array.from(guestsSelect.options).forEach(opt => { opt.disabled = parseInt(opt.value, 10) > Math.max(left, 1); }); }
   
 }
