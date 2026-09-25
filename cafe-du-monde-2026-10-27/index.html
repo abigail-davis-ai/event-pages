@@ -112,7 +112,7 @@ footer a { color: var(--teal); }
 <div class="wrap">
 
 <section id="details">
-  <span class="status-badge" id="spotsBadge">500 spots left</span>
+  
   <h2>Classic beignets and coffee to start the day</h2>
   <p>Drop by any time in the window for the original beignets and chicory coffee at the French Quarter institution. Come and go as it suits your morning.</p>
   <dl class="details-grid">
@@ -176,8 +176,13 @@ let spotsLeft = EVENT.capacity, liveCountWorks = false, reservedFor = null;
 function remaining() { return Math.max(spotsLeft, 0); }
 function renderCapacity() {
   const left = remaining();
+  if (spotsBadge) {
   if (left <= 0 && !reservedFor) { spotsBadge.textContent = 'Waitlist only'; submitBtn.disabled = true; submitBtn.textContent = 'Full — join waitlist by email'; }
   else { spotsBadge.textContent = left + ' ' + EVENT.unitWord + (liveCountWorks ? ' left' : ' left (est.)'); submitBtn.disabled = false; submitBtn.textContent = "RSVP"; }
+  } else {
+  if (left <= 0 && !reservedFor) { submitBtn.disabled = true; submitBtn.textContent = 'Full — join waitlist by email'; }
+  else { submitBtn.disabled = false; submitBtn.textContent = "RSVP"; }
+  }
   if (!reservedFor) { Array.from(guestsSelect.options).forEach(opt => { opt.disabled = parseInt(opt.value, 10) > Math.max(left, 1); }); }
   
 }
