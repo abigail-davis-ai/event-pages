@@ -169,7 +169,7 @@ footer a { color: var(--teal); }
       fetch(U,{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'},body:JSON.stringify({p_slug:el.dataset.slug})})
         .then(function(r){return r.ok?r.json():null}).then(function(n){
           if(typeof n!=='number') return;
-          el.textContent = n>0 ? (n+' '+el.dataset.unit+' left') : 'Sold out';
+          el.textContent = n>0 ? (n+' '+el.dataset.unit+' left') : 'Full · waitlist open';
         }).catch(function(){});
     });
   }
