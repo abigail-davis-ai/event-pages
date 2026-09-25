@@ -462,7 +462,7 @@ initLiveCapacity();
   var note=document.createElement('div');
   note.setAttribute('role','status');
   note.style.cssText='margin:0 0 14px;padding:12px 14px;border:1px solid currentColor;border-radius:6px;font-size:0.95rem;line-height:1.45;opacity:0.95;';
-  note.innerHTML='<strong>We\'re sold out!</strong> We\'re actively working to secure more spots &mdash; please join the waitlist below (<strong>no payment now</strong>). If a spot opens, Abigail will contact you directly for payment.';
+  note.innerHTML='<strong>We sold out fast!</strong> I\'m actively working to open up more spots &mdash; join the waitlist now so you\'re first in line. <strong>No payment today.</strong> The second a spot opens, I\'ll reach out to grab it for you.';
   note.hidden=true; btn.parentNode.insertBefore(note,btn);
   var busy=false, done=false;
   function full(){ return /waitlist only/i.test(badge.textContent||''); }
@@ -492,7 +492,7 @@ initLiveCapacity();
       done=true;
       var msg=document.createElement('div'); msg.setAttribute('role','status');
       msg.style.cssText=note.style.cssText;
-      msg.innerHTML='<strong>You\u2019re on the waitlist'+(res.position?' (#'+res.position+')':'')+'.</strong> No payment now. If a spot opens, Abigail will contact you for payment.';
+      msg.innerHTML='<strong>You\u2019re on the waitlist'+(res.position?' (#'+res.position+')':'')+'!</strong> No payment now &mdash; I\'ll reach out the moment a spot opens up.';
       form.parentNode.replaceChild(msg,form);
     }).catch(function(){ busy=false; apply(); alert('Sorry, we could not add you to the waitlist. Please email abigail.davis@compass.com.'); });
   },true);
