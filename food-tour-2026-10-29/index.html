@@ -187,7 +187,7 @@ function renderCapacity() {
   const left = remaining();
   if (spotsBadge) {
   if (left <= 0 && !reservedFor) { spotsBadge.textContent = 'Waitlist only'; submitBtn.disabled = true; submitBtn.textContent = 'Full — join waitlist by email'; }
-  else { spotsBadge.textContent = left + ' ' + EVENT.unitWord + (liveCountWorks ? ' left' : ' left (est.)'); submitBtn.disabled = false; submitBtn.textContent = "Continue to payment"; }
+  else { spotsBadge.textContent = left + ' ' + EVENT.unitWord + ' left'; submitBtn.disabled = false; submitBtn.textContent = "Continue to payment"; }
   } else {
   if (left <= 0 && !reservedFor) { submitBtn.disabled = true; submitBtn.textContent = 'Full — join waitlist by email'; }
   else { submitBtn.disabled = false; submitBtn.textContent = "Continue to payment"; }
