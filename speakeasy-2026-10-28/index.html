@@ -176,7 +176,11 @@ button {
 .confirm-row:last-child { border-bottom: none; }
 .confirm-row span:first-child { color: var(--brass); }
 
-#qrcode { background: var(--cream); padding: 12px; border-radius: 6px; display: inline-block; margin-top: 16px; }
+#qrcode { background: var(--cream); padding: 12px; border-radius: 6px; display: inline-block; }
+.qr-block { margin-top: 24px; }
+.qr-cta { font-family: 'CompassSerif', Georgia, serif; font-size: 1.25rem; color: var(--brass-bright); margin: 0 0 4px; }
+.qr-sub { font-size: 0.9rem; color: #cbb9a5; margin: 0 0 12px; }
+a.btn-primary { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; border-radius: 4px; padding: 15px 20px; min-height: 48px; font-family: 'CompassSans', sans-serif; font-size: 1rem; font-weight: 500; text-decoration: none; }
 
 .status-badge {
   display: inline-block;
@@ -277,10 +281,14 @@ footer a { color: rgba(236,223,208,0.8); }
     <p style="margin-top:18px;"><strong>Your spots are held for 2 hours.</strong> Pay within 2 hours to keep them.</p>
     <p style="margin-top:12px;">Tap below to open Venmo with the amount and note filled in. If it doesn't prefill, send it manually using the details above.</p>
     <div class="actions">
-      <a id="venmoBtn" class="btn-primary" style="text-decoration:none; display:inline-block;" target="_blank" rel="noopener">Pay with Venmo</a>
+      <a id="venmoBtn" class="btn-primary" target="_blank" rel="noopener">Pay with Venmo</a>
       <button type="button" class="btn-secondary" id="backBtn">Back</button>
     </div>
-    <div id="qrcode"></div>
+    <div class="qr-block">
+      <p class="qr-cta">Scan to pay with Venmo</p>
+      <p class="qr-sub">On a computer? Point your phone&rsquo;s camera at the code. Venmo opens with the amount and note filled in.</p>
+      <div id="qrcode"></div>
+    </div>
     <p style="margin-top:18px; font-size:0.85rem; color:#cbb9a5;">We've also emailed your RSVP to Abigail so she's expecting your payment. If your email client didn't open, reach her directly at <a href="mailto:abigail.davis@compass.com">abigail.davis@compass.com</a>.</p>
   </div>
 </section>
