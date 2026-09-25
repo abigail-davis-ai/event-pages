@@ -452,5 +452,51 @@ document.getElementById('backBtn').addEventListener('click', function () {
 
 initLiveCapacity();
 </script>
+<!-- waitlist add-on (RRD, event-pages how-to). Takes over the form only when the badge says "Waitlist only". -->
+<script>
+(function(){
+  var K='sb_publishable_XgxZOI8PNhMPxu6xan0ynQ_keCLLsH9', U='https://yzsstfoeetrqcipyviqv.supabase.co/rest/v1/rpc/public_event_waitlist';
+  var form=document.getElementById('rsvpForm'), badge=document.getElementById('spotsBadge'), sel=document.getElementById('guests');
+  if(!form||!badge||typeof EVENT==='undefined'||!EVENT.slug) return;
+  var btn=form.querySelector('button[type="submit"]'); if(!btn) return;
+  var note=document.createElement('div');
+  note.setAttribute('role','status');
+  note.style.cssText='margin:0 0 14px;padding:12px 14px;border:1px solid currentColor;border-radius:6px;font-size:0.95rem;line-height:1.45;opacity:0.95;';
+  note.innerHTML='<strong>This event is full.</strong> Join the waitlist below &mdash; <strong>no payment now</strong>. If a spot opens, Abigail will contact you for payment.';
+  note.hidden=true; btn.parentNode.insertBefore(note,btn);
+  var busy=false, done=false;
+  function full(){ return /waitlist only/i.test(badge.textContent||''); }
+  function apply(){
+    if(done) return;
+    var f=full(); if(note.hidden===f) note.hidden=!f;
+    if(!f) return;
+    var want=busy?'Adding you to the waitlist…':'Join the waitlist';
+    if(btn.textContent!==want) btn.textContent=want;
+    if(btn.disabled!==busy) btn.disabled=busy;
+    if(sel) Array.prototype.forEach.call(sel.options,function(o){ if(o.disabled) o.disabled=false; });
+  }
+  new MutationObserver(apply).observe(badge,{childList:true,characterData:true,subtree:true});
+  new MutationObserver(apply).observe(btn,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['disabled']});
+  apply();
+  form.addEventListener('submit',function(e){
+    if(!full()) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    if(busy||done) return;
+    var v=function(id){var x=document.getElementById(id);return x?x.value.trim():'';};
+    busy=true; apply();
+    fetch(U,{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'},
+      body:JSON.stringify({p_slug:EVENT.slug,p_name:v('name'),p_email:v('email'),p_phone:v('phone'),p_guests:parseInt(sel?sel.value:'1',10)||1})})
+    .then(function(r){return r.json();}).then(function(res){
+      busy=false;
+      if(!res||!res.ok){ apply(); alert(res&&res.error==='bad_contact'?'Please check your name and email, then try again.':'Sorry, we could not add you to the waitlist. Please email abigail.davis@compass.com.'); return; }
+      done=true;
+      var msg=document.createElement('div'); msg.setAttribute('role','status');
+      msg.style.cssText=note.style.cssText;
+      msg.innerHTML='<strong>You\u2019re on the waitlist'+(res.position?' (#'+res.position+')':'')+'.</strong> No payment now. If a spot opens, Abigail will contact you for payment.';
+      form.parentNode.replaceChild(msg,form);
+    }).catch(function(){ busy=false; apply(); alert('Sorry, we could not add you to the waitlist. Please email abigail.davis@compass.com.'); });
+  },true);
+})();
+</script>
 </body>
 </html>
