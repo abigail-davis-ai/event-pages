@@ -493,7 +493,7 @@ initLiveCapacity();
       done=true;
       var msg=document.createElement('div'); msg.setAttribute('role','status');
       msg.style.cssText=note.style.cssText;
-      msg.innerHTML='<strong>You\u2019re on the waitlist'+(res.position?' (#'+res.position+')':'')+'!</strong> No payment now &mdash; I\'ll reach out the moment a spot opens up.';
+      msg.innerHTML='<strong>You\u2019re on the waitlist'+'!</strong> No payment now &mdash; I\'ll reach out the moment a spot opens up.';
       form.parentNode.replaceChild(msg,form);
     }).catch(function(){ busy=false; apply(); alert('Sorry, we could not add you to the waitlist. Please email abigail.davis@compass.com.'); });
   },true);
