@@ -304,7 +304,7 @@ initLiveCapacity();
       done=true;
       var msg=document.createElement('div'); msg.setAttribute('role','status');
       msg.style.cssText=note.style.cssText;
-      msg.innerHTML='<strong>You\u2019re on the waitlist'+(res.position?' (#'+res.position+')':'')+'.</strong> No payment now. If a spot opens, Abigail will contact you for payment.';
+      msg.innerHTML='<strong>You\u2019re on the waitlist'+'.</strong> No payment now. If a spot opens, Abigail will contact you for payment.';
       form.parentNode.replaceChild(msg,form);
     }).catch(function(){ busy=false; apply(); alert('Sorry, we could not add you to the waitlist. Please email abigail.davis@compass.com.'); });
   },true);
