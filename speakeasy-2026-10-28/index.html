@@ -226,6 +226,7 @@ footer a { color: rgba(236,223,208,0.8); }
 <section id="details">
   <span class="status-badge" id="spotsBadge">14 spots left</span>
   <h2>An exclusive event with the agents worth knowing</h2>
+  <div id="waitlistNoteAnchor"></div>
   <p>An exclusive, reservation-only speakeasy hour for Compass agents &mdash; full bar, light bites, and a red velvet room built for actual conversation. Hosted by Abigail Davis, Compass Dallas.</p>
   <p>This is perfectly timed to give you a chance to change into your finery for the official Soir&eacute;e beforehand, and we'll head out to the big party together after.</p>
 
@@ -459,11 +460,13 @@ initLiveCapacity();
   var form=document.getElementById('rsvpForm'), badge=document.getElementById('spotsBadge'), sel=document.getElementById('guests');
   if(!form||!badge||typeof EVENT==='undefined'||!EVENT.slug) return;
   var btn=form.querySelector('button[type="submit"]'); if(!btn) return;
+  var anchor=document.getElementById('waitlistNoteAnchor');
   var note=document.createElement('div');
   note.setAttribute('role','status');
-  note.style.cssText='margin:0 0 14px;padding:12px 14px;border:1px solid currentColor;border-radius:6px;font-size:0.95rem;line-height:1.45;opacity:0.95;';
+  note.style.cssText='margin:20px 0 0;padding:12px 14px;border:1px solid currentColor;border-radius:6px;font-size:0.95rem;line-height:1.45;opacity:0.95;';
   note.innerHTML='<strong>We sold out fast!</strong> I\'m actively working to open up more spots &mdash; join the waitlist now so you\'re first in line. <strong>No payment today.</strong> The second a spot opens, I\'ll reach out to grab it for you.';
-  note.hidden=true; btn.parentNode.insertBefore(note,btn);
+  note.hidden=true;
+  if(anchor) anchor.parentNode.insertBefore(note,anchor.nextSibling); else btn.parentNode.insertBefore(note,btn);
   var busy=false, done=false;
   function full(){ return /waitlist only/i.test(badge.textContent||''); }
   function apply(){
