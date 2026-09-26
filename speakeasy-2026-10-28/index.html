@@ -299,7 +299,7 @@ footer a { color: rgba(236,223,208,0.8); }
       <p class="qr-sub">On a computer? Point your phone&rsquo;s camera at the code. Venmo opens with the amount and note filled in.</p>
       <div id="qrcode"></div>
     </div>
-    <p style="margin-top:18px; font-size:0.85rem; color:#cbb9a5;">We've also emailed your RSVP to Abigail so she's expecting your payment. If your email client didn't open, reach her directly at <a href="mailto:abigail.davis@compass.com">abigail.davis@compass.com</a>.</p>
+    <p style="margin-top:18px; font-size:0.85rem; color:#cbb9a5;">A confirmation with all the details is on its way to your inbox (check spam if you don&rsquo;t see it). Questions? Email <a href="mailto:abigail.davis@compass.com">abigail.davis@compass.com</a>.</p>
   </div>
 </section>
 
@@ -436,9 +436,7 @@ rsvpForm.addEventListener('submit', async function (e) {
     new QRCode(document.getElementById('qrcode'), { text: venmoUrl, width: 160, height: 160 });
   }
 
-  const mailBody = `New RSVP - ${EVENT.name}%0D%0A%0D%0AName: ${encodeURIComponent(name)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0APhone: ${encodeURIComponent(phone)}%0D%0ATickets: ${guests}%0D%0AAmount due: $${total}%0D%0A%0D%0A(They should be paying you via Venmo with note: "${note}")`;
-  const mailtoUrl = `mailto:${EVENT.contactEmail}?subject=${encodeURIComponent('RSVP - ' + EVENT.name + ' - ' + name)}&body=${mailBody}`;
-  window.location.href = mailtoUrl;
+  // RSVP email: sent automatically from the database (confirmation to guest, alert to Abigail). No mailto draft.
 
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step2').classList.add('active');
