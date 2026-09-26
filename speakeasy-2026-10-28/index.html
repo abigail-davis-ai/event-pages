@@ -462,7 +462,7 @@ initLiveCapacity();
   var note=document.createElement('div');
   note.setAttribute('role','status');
   note.style.cssText='margin:20px 0 24px;padding:12px 14px;border:1px solid currentColor;border-radius:6px;font-size:0.95rem;line-height:1.45;opacity:0.95;';
-  note.innerHTML='<strong>Join the waitlist</strong> &mdash; we sold out fast, but I\'m doing everything I can to open up more spots. Join now and you\'ll be first in line: no payment today, and the second a spot opens up, I\'m reaching out to grab it for you.';
+  note.innerHTML='<strong><a href="#rsvp" style="color:inherit;text-decoration:underline;">Join the waitlist</a></strong> &mdash; we sold out fast, but I\'m doing everything I can to open up more spots. Join now and you\'ll be first in line: no payment today, and the second a spot opens up, I\'m reaching out to grab it for you.';
   note.hidden=true;
   if(anchor) anchor.parentNode.insertBefore(note,anchor.nextSibling); else btn.parentNode.insertBefore(note,btn);
   var busy=false, done=false;
