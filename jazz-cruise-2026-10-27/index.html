@@ -28,8 +28,8 @@
   --paper: #fffaf2;
   --ink: #2c1c12;
   --muted: #6b5645;
-  --teal: #3a6ea5;
-  --teal-light: #e8eef7;
+  --teal: #9c4d44;
+  --teal-light: #f5e9e6;
   --gold: #c9a15a;
   --gold-dark: #a9803f;
   --line: rgba(47,111,98,0.22);
@@ -46,8 +46,17 @@ img { max-width: 100%; display: block; }
 .brand-bar .nola-events-label { font-family: 'CompassSans', sans-serif; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.12em; color: var(--teal); }
 .brand-bar span { font-size: 0.8rem; letter-spacing: 0.04em; color: var(--muted); }
 .hero-img-wrap { max-width: 900px; margin: 0 auto; position: relative; }
-.hero-fleur { position: absolute; top: 14px; right: 14px; width: 60px; height: auto; opacity: 0.88; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35)); }
-@media (max-width: 480px) { .hero-fleur { width: 42px; top: 10px; right: 10px; } }
+.bg-decor { position: fixed; pointer-events: none; z-index: 0; opacity: 0.14; }
+.bg-decor img { display: block; width: 100%; height: auto; }
+.bg-fleur-tr { top: 40px; right: -30px; width: 200px; }
+.bg-balcony-bl { bottom: -20px; left: -30px; width: 320px; }
+.bg-scene-br { bottom: 10px; right: -20px; width: 180px; }
+@media (max-width: 700px) {
+  .bg-fleur-tr { width: 130px; top: 20px; right: -25px; }
+  .bg-balcony-bl { width: 220px; }
+  .bg-scene-br { width: 110px; }
+}
+body > .brand-bar, body > .hero-img-wrap, body > .hero-text, body > .wrap { position: relative; z-index: 1; }
 .hero-img { width: 100%; height: 34vh; max-height: 380px; object-fit: cover; }
 .hero-text { padding: 24px 24px 8px; max-width: 720px; margin: 0 auto; }
 .eyebrow { font-family: 'CompassSerif', serif; font-weight: 600; font-style: normal; letter-spacing: 0.01em; color: var(--teal); font-size: 1.35rem; margin: 0 0 8px; }
@@ -76,7 +85,7 @@ input:focus, select:focus, button:focus { outline: 2px solid var(--teal); outlin
 .total-line .amt { font-family: 'CompassSerif', serif; font-size: 1.7rem; color: var(--teal); }
 button { appearance: none; border: none; cursor: pointer; border-radius: 5px; padding: 15px 20px; font-family: 'CompassSans', sans-serif; font-size: 1rem; font-weight: 500; min-height: 48px; }
 .btn-primary { background: var(--teal); color: #fff; }
-.btn-primary:hover { background: #2a5680; }
+.btn-primary:hover { background: #7a3c35; }
 .btn-secondary { background: transparent; border: 1px solid var(--teal); color: var(--teal); }
 .step { display: none; } .step.active { display: block; }
 .confirm-card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 22px; margin-top: 18px; }
