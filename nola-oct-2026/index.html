@@ -48,10 +48,9 @@ img { max-width: 100%; display: block; }
 .hero-img-wrap { max-width: 900px; margin: 0 auto; position: relative; }
 .bg-decor { position: fixed; pointer-events: none; z-index: 0; opacity: 0.14; }
 .bg-decor img { display: block; width: 100%; height: auto; }
-.hero-fleur-corner { position: absolute; top: -34px; right: -26px; width: 100px; z-index: 0; }
-.hero-fleur-corner img { display: block; width: 100%; height: auto; opacity: 0.92; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
-.hero-img { position: relative; z-index: 1; }
-@media (max-width: 700px) { .hero-fleur-corner { width: 68px; top: -22px; right: -16px; } }
+.bg-fleur-tr { position: fixed; pointer-events: none; z-index: 0; opacity: 0.85; top: 220px; right: 30px; width: 280px; }
+.bg-fleur-tr img { display: block; width: 100%; height: auto; }
+@media (max-width: 700px) { .bg-fleur-tr { width: 170px; top: 160px; right: 10px; } }
 .bg-balcony-bl { bottom: -20px; left: -30px; width: 320px; }
 .bg-scene-br { bottom: 10px; right: -20px; width: 180px; }
 @media (max-width: 700px) {
@@ -121,6 +120,7 @@ footer a { color: var(--teal); }
 </head>
 <body>
 
+<div class="bg-decor bg-fleur-tr"><img src="img-995a2ce0c1.png" alt=""></div>
 <div class="bg-decor bg-balcony-bl"><img src="img-02c786b2bf.png" alt=""></div>
 <div class="bg-decor bg-scene-br"><img src="img-978fd80ce5.png" alt=""></div>
 
@@ -129,7 +129,6 @@ footer a { color: var(--teal); }
   <span class="nola-events-label">NOLA EVENTS 2026</span>
 </div>
 <div class="hero-img-wrap">
-  <div class="hero-fleur-corner"><img src="img-995a2ce0c1.png" alt=""></div>
   <img class="hero-img" src="img-ac0e13024c.jpg" alt="NOLA">
 </div>
 <div class="hero-text">
