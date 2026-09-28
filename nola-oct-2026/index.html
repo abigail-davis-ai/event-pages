@@ -49,8 +49,8 @@ img { max-width: 100%; display: block; }
 .hero-img-wrap { max-width: 900px; margin: 0 auto; position: relative; }
 .bg-decor { position: fixed; pointer-events: none; z-index: 0; opacity: 0.14; }
 .bg-decor img { display: block; width: 100%; height: auto; }
-.eyebrow-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.eyebrow-fleur { width: 46px; height: auto; opacity: 0.55; flex-shrink: 0; }
+.bg-fleur-tr { position: fixed; pointer-events: none; z-index: 0; opacity: 0.25; top: 120px; right: 40px; width: 280px; }
+.bg-fleur-tr img { display: block; width: 100%; height: auto; }
 .bg-balcony-bl { bottom: -20px; left: -30px; width: 320px; }
 .bg-scene-br { bottom: 10px; right: -20px; width: 180px; }
 @media (max-width: 700px) {
@@ -120,6 +120,7 @@ footer a { color: var(--teal); }
 </head>
 <body>
 
+<div class="bg-decor bg-fleur-tr"><img src="img-995a2ce0c1.png" alt=""></div>
 <div class="bg-decor bg-balcony-bl"><img src="img-02c786b2bf.png" alt=""></div>
 <div class="bg-decor bg-scene-br"><img src="img-978fd80ce5.png" alt=""></div>
 
@@ -131,10 +132,7 @@ footer a { color: var(--teal); }
   <img class="hero-img" src="img-ac0e13024c.jpg" alt="NOLA">
 </div>
 <div class="hero-text">
-  <div class="eyebrow-row">
-    <p class="eyebrow">Abigail Davis presents</p>
-    <img class="eyebrow-fleur" src="img-995a2ce0c1.png" alt="">
-  </div>
+  <p class="eyebrow">Abigail Davis presents</p>
   <h1>The best event lineup in NOLA</h1>
   <p class="hero-meta"><strong>October 27&ndash;29, 2026</strong></p>
 </div>
