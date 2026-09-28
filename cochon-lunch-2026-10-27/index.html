@@ -286,15 +286,15 @@ initLiveCapacity();
 (function(){
   var K='sb_publishable_XgxZOI8PNhMPxu6xan0ynQ_keCLLsH9', U='https://yzsstfoeetrqcipyviqv.supabase.co/rest/v1/rpc/public_event_waitlist';
   var form=document.getElementById('rsvpForm'), badge=document.getElementById('spotsBadge'), sel=document.getElementById('guests');
-  if(!form||!badge||typeof EVENT==='undefined'||!EVENT.slug) return;
+  if(!form||typeof EVENT==='undefined'||!EVENT.slug) return;
   var btn=form.querySelector('button[type="submit"]'); if(!btn) return;
   var note=document.createElement('div');
   note.setAttribute('role','status');
   note.style.cssText='margin:0 0 14px;padding:12px 14px;border:1px solid currentColor;border-radius:6px;font-size:0.95rem;line-height:1.45;opacity:0.95;';
   note.innerHTML='<strong>This event is full.</strong> Join the waitlist below &mdash; <strong>no payment now</strong>. If a spot opens, Abigail will contact you for payment.';
   note.hidden=true; btn.parentNode.insertBefore(note,btn);
-  var busy=false, done=false;
-  function full(){ return /waitlist only/i.test(badge.textContent||''); }
+  var busy=false, done=false, lastFull=false;
+  function full(){ var t=btn.textContent||''; var f=(badge&&/waitlist only/i.test(badge.textContent||''))||/join waitlist by email/i.test(t)||(lastFull&&/^(Join the waitlist|Adding you)/.test(t)); lastFull=f; return f; }
   function apply(){
     if(done) return;
     var f=full(); if(note.hidden===f) note.hidden=!f;
@@ -304,7 +304,7 @@ initLiveCapacity();
     if(btn.disabled!==busy) btn.disabled=busy;
     if(sel) Array.prototype.forEach.call(sel.options,function(o){ if(o.disabled) o.disabled=false; });
   }
-  new MutationObserver(apply).observe(badge,{childList:true,characterData:true,subtree:true});
+  if(badge) new MutationObserver(apply).observe(badge,{childList:true,characterData:true,subtree:true});
   new MutationObserver(apply).observe(btn,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['disabled']});
   apply();
   form.addEventListener('submit',function(e){
