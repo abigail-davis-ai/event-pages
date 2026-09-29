@@ -116,6 +116,12 @@ footer a { color: var(--teal); }
 .compass-dallas img { height: 22px; width: auto; margin: 0; }
 .compass-dallas span { font-family: 'CompassSans', sans-serif; font-weight: 700; font-size: 1.7rem; letter-spacing: 0.42em; padding-left: 0.42em; color: var(--ink); }
 
+
+/* sold-out mode (RRD, founder direction 2026-09-29): no RSVPs, no waitlist */
+#step1, #step2, #spotsBadge { display: none !important; }
+.soldout-box { margin: 18px 0 8px; padding: 18px 20px; border: 2px solid #a3262a; border-radius: 8px; }
+.soldout-box .so-badge { display: inline-block; background: #a3262a; color: #fff; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; font-size: .9rem; }
+.soldout-box p { margin: 12px 0 0; }
 </style>
 </head>
 <body>
@@ -138,7 +144,7 @@ footer a { color: var(--teal); }
 <div class="wrap">
 
 <section id="details">
-  <span class="status-badge" id="spotsBadge">13 seats left</span>
+  <span class="status-badge" style="background:#a3262a;color:#fff">Sold out</span><span class="status-badge" id="spotsBadge"></span>
   <h2>A Cajun feast in the Warehouse District</h2>
   <p>A 3-course lunch at Cochon, one of New Orleans' best spots for Cajun and Southern cooking. Ticket covers the meal; drinks are purchased separately at the venue.</p>
   <dl class="details-grid">
@@ -150,7 +156,8 @@ footer a { color: var(--teal); }
 </section>
 
 <section id="rsvp">
-  <h2>Reserve your spot</h2>
+  <h2>Sold out</h2>
+  <div class="soldout-box" role="status"><span class="so-badge">Sold out</span><p>Thank you so much for your interest! This one is completely full. I&rsquo;d love to see you at one of the other NOLA events.</p><p><a href="/nola-oct-2026/">See all NOLA events &rarr;</a></p></div>
   <div class="venmo-banner"><strong>Tickets are confirmed on payment only.</strong> Submitting the form holds your spot(s) for <strong>2 hours</strong>. Send payment via Venmo on the next screen — if payment isn’t received within 2 hours, your spot(s) are released to the next guest.</div>
   <div class="step active" id="step1">
     <form id="rsvpForm">
