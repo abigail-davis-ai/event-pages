@@ -370,6 +370,6 @@ initLiveCapacity();
 </script>
 <!-- badge-label add-on (RRD, founder direction): shows a fixed label instead of the seat count -->
 <style>#spotsBadge{display:none !important}</style>
-<script>(function(){var b=document.getElementById("spotsBadge");if(!b)return;var s=document.createElement("span");s.className=b.className;s.id="badgeLabel";b.parentNode.insertBefore(s,b);function u(){var full=/waitlist only/i.test(b.textContent||"");s.textContent=full?'Waitlist open':'Selling out fast';s.style.background=full?"#5b4a8a":"#a3262a";s.style.color="#fff";}new MutationObserver(u).observe(b,{childList:true,characterData:true,subtree:true});u();})();</script>
+<script>(function(){var b=document.getElementById("spotsBadge");if(!b)return;var s=document.createElement("span");s.className=b.className;s.id="badgeLabel";b.parentNode.insertBefore(s,b);function u(){var full=/waitlist only/i.test(b.textContent||"");s.textContent=full?'Waitlist open':'Selling out fast';s.style.background=full?"#a3262a":"#a3262a";s.style.color="#fff";}new MutationObserver(u).observe(b,{childList:true,characterData:true,subtree:true});u();})();</script>
 </body>
 </html>
