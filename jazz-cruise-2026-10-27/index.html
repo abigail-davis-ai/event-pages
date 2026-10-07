@@ -327,5 +327,46 @@ initLiveCapacity();
   },true);
 })();
 </script>
+<!-- guest-names add-on (RRD, event-pages how-to). When more than 1 ticket is picked, asks for each guest's name (required) and email (optional) and sends them with the RSVP. -->
+<script>
+(function(){
+  var form=document.getElementById('rsvpForm'), sel=document.getElementById('guests');
+  if(!form||!sel) return;
+  var box=document.createElement('div'); box.className='gn-box'; box.style.cssText='margin:6px 0 14px;';
+  var anchor=sel.closest('div')||sel; anchor.parentNode.insertBefore(box, anchor.nextSibling);
+  function field(lbl,type,name,req,ph){ var w=document.createElement('div'); w.style.cssText='margin-top:10px;';
+    var l=document.createElement('label'); l.textContent=lbl; var i=document.createElement('input'); i.type=type; i.name=name; i.placeholder=ph||''; if(req) i.required=true; i.style.width='100%';
+    l.appendChild(document.createElement('br')); l.appendChild(i); w.appendChild(l); return w; }
+  function render(){
+    var n=(parseInt(sel.value,10)||1)-1, keep={};
+    box.querySelectorAll('input').forEach(function(i){ keep[i.name]=i.value; });
+    box.textContent='';
+    if(n<1) return;
+    var h=document.createElement('p'); h.style.cssText='margin:4px 0 0;font-weight:600;'; h.textContent=n===1?'Who is your guest?':'Who are your guests?'; box.appendChild(h);
+    for(var k=1;k<=n;k++){
+      var suf=n>1?(' '+k):'';
+      box.appendChild(field('Guest'+suf+' name','text','gn_name_'+k,true,'First and last name'));
+      box.appendChild(field('Guest'+suf+' email (optional)','email','gn_email_'+k,false,'name@example.com'));
+    }
+    box.querySelectorAll('input').forEach(function(i){ if(keep[i.name]) i.value=keep[i.name]; });
+  }
+  sel.addEventListener('change',render); render();
+  function names(){
+    var n=(parseInt(sel.value,10)||1)-1, out=[];
+    for(var k=1;k<=n;k++){ var a=form.querySelector('[name=gn_name_'+k+']'), b=form.querySelector('[name=gn_email_'+k+']');
+      var nm=a?a.value.trim():'', em=b?b.value.trim():''; if(nm) out.push(em?nm+' <'+em+'>':nm); }
+    return out.join('; ');
+  }
+  var of=window.fetch;
+  window.fetch=function(url,opts){
+    try{
+      if(typeof url==='string' && /\/rpc\/public_event_(reserve|waitlist)$/.test(url) && opts && typeof opts.body==='string'){
+        var b=JSON.parse(opts.body), g=names(); if(g){ b.p_guest_names=g; opts=Object.assign({},opts,{body:JSON.stringify(b)}); }
+      }
+    }catch(e){}
+    return of.apply(this,[url,opts]);
+  };
+})();
+</script>
 </body>
 </html>
