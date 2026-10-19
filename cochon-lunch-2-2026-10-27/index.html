@@ -119,11 +119,6 @@ footer a { color: var(--teal); }
 
 .second-banner { margin: 14px 0 16px; padding: 14px 18px; border-radius: 8px; background: #fff4d6; border: 2px solid #d99a1a; color: #3a2a00; }
 
-/* sold-out mode (RRD, founder direction): no RSVPs, no waitlist */
-#step1, #step2, #spotsBadge, #rsvp .venmo-banner, #rsvp .second-banner { display: none !important; }
-.soldout-box { margin: 18px 0 8px; padding: 18px 20px; border: 2px solid #a3262a; border-radius: 8px; }
-.soldout-box .so-badge { display: inline-block; background: #a3262a; color: #fff; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; font-size: .9rem; }
-.soldout-box p { margin: 12px 0 0; }
 </style>
 </head>
 <body>
@@ -146,7 +141,7 @@ footer a { color: var(--teal); }
 <div class="wrap">
 
 <section id="details">
-  <span class="status-badge" style="background:#a3262a;color:#fff">Sold out</span><span class="status-badge" id="spotsBadge"></span>
+  <span class="status-badge" id="spotsBadge">Waitlist open</span>
   <h2>A Cajun feast in the Warehouse District</h2>
   <p>A 3-course lunch at Cochon, one of New Orleans' best spots for Cajun and Southern cooking. Ticket covers the meal; drinks are purchased separately at the venue.</p>
   <dl class="details-grid">
@@ -158,8 +153,8 @@ footer a { color: var(--teal); }
 </section>
 
 <section id="rsvp">
-  <h2>Sold out</h2>
-  <div class="soldout-box" role="status"><span class="so-badge">Sold out</span><p>Thank you so much for your interest! Both Cochon seatings are completely full. I&rsquo;d love to see you at one of the other NOLA events.</p><p><a href="/nola-oct-2026/">See all NOLA events &rarr;</a></p></div>
+  <h2>Join the waitlist</h2>
+  <div class="second-banner" role="status"><strong>This seating is full right now</strong>, but spots do open up. Add your name to the waitlist and I&rsquo;ll reach out if one becomes available.</div>
   <div class="second-banner" role="status"><strong>New: a 2nd seating at 12:30!</strong> The first seating filled up, so Cochon opened a second one just for us. Same 3-course Cajun lunch, same great people.</div>
   <div class="venmo-banner"><strong>Tickets are confirmed on payment only.</strong> Submitting the form holds your spot(s) for <strong>2 hours</strong>. Send payment via Venmo on the next screen — if payment isn’t received within 2 hours, your spot(s) are released to the next guest.</div>
   <div class="step active" id="step1">
@@ -378,5 +373,8 @@ initLiveCapacity();
   };
 })();
 </script>
+<!-- badge-label add-on (RRD, founder direction): shows a fixed label instead of the seat count -->
+<style>#spotsBadge{display:none !important}</style>
+<script>(function(){var b=document.getElementById("spotsBadge");if(!b)return;var s=document.createElement("span");s.className=b.className;s.id="badgeLabel";b.parentNode.insertBefore(s,b);function u(){var full=/waitlist only/i.test(b.textContent||"");s.textContent=full?"Waitlist open":"Seats available";s.style.background="#a3262a";s.style.color="#fff";}new MutationObserver(u).observe(b,{childList:true,characterData:true,subtree:true});u();})();</script>
 </body>
 </html>
