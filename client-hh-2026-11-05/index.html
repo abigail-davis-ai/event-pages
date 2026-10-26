@@ -84,7 +84,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
     <div id="formWrap">
       <h2 id="ask">Can you make it?</h2>
       <form id="f" novalidate>
-        <div><label for="f-name">Your name</label><input id="f-name" autocomplete="name" required></div>
+        <div id="nameRow"><label for="f-name">Your name</label><input id="f-name" autocomplete="name" required></div>
         <p class="err" id="err" hidden></p>
         <div class="two">
           <button type="submit" class="go" data-a="yes">Yes, I'll be there</button>
@@ -112,7 +112,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   var K='sb_publishable_XgxZOI8PNhMPxu6xan0ynQ_keCLLsH9', U='https://yzsstfoeetrqcipyviqv.supabase.co/rest/v1/rpc/hh_rsvp';
   var q=new URLSearchParams(location.search), code=(q.get('g')||'').toLowerCase(), first=(q.get('n')||'').trim();
   var f=document.getElementById('f'), err=document.getElementById('err'), nm=document.getElementById('f-name');
-  if(first){ document.getElementById('ask').textContent='Hi '+first+'! Can you make it?'; nm.value=first; }
+  if(/^[0-9a-f]{8}$/.test(code)){ document.getElementById('nameRow').hidden=true; } else if(first){ nm.value=first; }
   var btns=f.querySelectorAll('button[type=submit]'), pick='yes';
   btns.forEach(function(b){ b.addEventListener('click', function(){ pick=b.getAttribute('data-a'); }); });
   function show(m){ err.textContent=m; err.hidden=false; }
@@ -121,7 +121,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
     document.getElementById('doneYes').hidden=true; document.getElementById('doneNo').hidden=true; document.getElementById('formWrap').hidden=false; }); });
   f.addEventListener('submit', function(e){
     e.preventDefault(); err.hidden=true;
-    var name=nm.value.trim(); if(name.length<2){ show('Please type your name.'); return; }
+    var name=nm.value.trim(); if(document.getElementById('nameRow').hidden){ name=''; } else if(name.length<2){ show('Please type your name.'); return; }
     busy(true);
     var d={p_slug:'client-hh-2026-11-05', p_code:code, p_name:name, p_answer:pick};
     /*SAVE*/fetch(U,{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'},body:JSON.stringify(d)}).then(function(r){ return r.json(); })/*END*/
