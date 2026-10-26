@@ -113,6 +113,11 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   var q=new URLSearchParams(location.search), code=(q.get('g')||'').toLowerCase(), first=(q.get('n')||'').trim();
   var f=document.getElementById('f'), err=document.getElementById('err'), nm=document.getElementById('f-name');
   if(/^[0-9a-f]{8}$/.test(code)){ document.getElementById('nameRow').hidden=true; } else if(first){ nm.value=first; }
+  if(/^[0-9a-f]{8}$/.test(code)){
+    /*NAME*/fetch('https://yzsstfoeetrqcipyviqv.supabase.co/rest/v1/rpc/hh_guest_first_name',{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'},body:JSON.stringify({p_slug:'client-hh-2026-11-05',p_code:code})}).then(function(r){ return r.ok?r.json():null; })/*ENDNAME*/
+      .then(function(n){ if(n){ document.getElementById('ask').textContent='Hi '+n+'! Can you make it?'; } else { document.getElementById('nameRow').hidden=false; } })
+      .catch(function(){ document.getElementById('nameRow').hidden=false; });
+  }
   var btns=f.querySelectorAll('button[type=submit]'), pick='yes';
   btns.forEach(function(b){ b.addEventListener('click', function(){ pick=b.getAttribute('data-a'); }); });
   function show(m){ err.textContent=m; err.hidden=false; }
