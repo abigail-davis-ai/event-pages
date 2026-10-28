@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Event Photos</title>
+<meta name="description" content="Add your photos from the event and see everyone else's.">
+<meta property="og:title" content="Event Photos">
+<meta property="og:description" content="Add your photos from the event and see everyone else's.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: a darkroom contact sheet. One slim header, then the photos edge to edge in columns. */
+:root {
+  color-scheme: dark;
+  --bg: #161312;
+  --surface: #221d1b;
+  --line: #3a322e;
+  --fg: #f1ebe4;
+  --muted: #a89b91;
+  --accent: #d6a65e;
+  --accent-ink: #1d1407;
+  --ok: #8fc79a;
+  --bad: #ef8f7f;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--fg); font: 16px/1.5 var(--body);
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1400px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { padding-block: 40px 24px; display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: end; justify-content: space-between; }
+.eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+h1 { font: 600 clamp(34px, 6vw, 60px)/1.02 var(--display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.sub { color: var(--muted); margin: 10px 0 0; max-width: 52ch; }
+.count { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; margin-top: 8px; }
+.actions { display: flex; flex-direction: column; gap: 10px; align-items: stretch; min-width: 0; width: min(100%, 320px); }
+.name { background: var(--surface); border: 1px solid var(--line); color: var(--fg); border-radius: 10px; padding: 12px 14px; font: inherit; width: 100%; }
+.name::placeholder { color: var(--muted); }
+.btn {
+  appearance: none; border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-ink);
+  font: 600 17px/1 var(--body); padding: 16px 20px; cursor: pointer; display: inline-flex; gap: 10px;
+  align-items: center; justify-content: center; text-decoration: none;
+}
+.btn:hover { filter: brightness(1.07); }
+.btn:disabled { opacity: .55; cursor: default; filter: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.status { font-size: 14px; color: var(--muted); min-height: 1.5em; font-variant-numeric: tabular-nums; }
+.status.ok { color: var(--ok); }
+.status.bad { color: var(--bad); }
+.bar { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+
+.grid { columns: 4 260px; column-gap: 8px; padding-block: 8px 48px; }
+.tile {
+  display: block; width: 100%; margin: 0 0 8px; padding: 0; border: 0; background: var(--surface);
+  border-radius: 4px; overflow: hidden; cursor: zoom-in; break-inside: avoid; position: relative;
+}
+.tile img { display: block; width: 100%; height: auto; }
+.tile.pending { opacity: .55; cursor: default; }
+.tile .by {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px; font-size: 13px; text-align: left;
+  color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.6)); opacity: 0; transition: opacity .15s;
+}
+.tile:hover .by, .tile:focus-visible .by { opacity: 1; }
+.empty { border: 1px dashed var(--line); border-radius: 12px; padding: 56px 20px; text-align: center; color: var(--muted); margin-block: 8px 48px; }
+.empty strong { display: block; color: var(--fg); font: 500 24px/1.2 var(--display); margin-bottom: 6px; }
+
+.lb { position: fixed; inset: 0; background: rgba(10,8,7,.96); z-index: 20; display: grid; grid-template-rows: auto 1fr auto; }
+.lb-top, .lb-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 14px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); }
+.lb-bottom { padding-top: 10px; padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+.lb-stage { position: relative; min-height: 0; display: grid; place-items: center; touch-action: pan-y; }
+.lb-stage img { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
+.icon { appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 999px;
+  width: 44px; height: 44px; font-size: 20px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+.nav { position: absolute; top: 50%; transform: translateY(-50%); }
+.nav.prev { left: max(12px, env(safe-area-inset-left, 0px)); }
+.nav.next { right: max(12px, env(safe-area-inset-right, 0px)); }
+.lb a { color: var(--fg); }
+@media (max-width: 600px) { .grid { columns: 2; column-gap: 6px; } .tile { margin-bottom: 6px; } .nav { display: none; } header { padding-top: 28px; } .actions { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div style="min-width:0">
+      <p class="eyebrow">Event photos</p>
+      <h1 id="title">Loading…</h1>
+      <p class="sub" id="sub"></p>
+      <p class="count" id="count"></p>
+    </div>
+    <div class="actions" id="actions" hidden>
+      <input class="name" id="who" type="text" maxlength="60" autocomplete="name" placeholder="Your name (optional)" aria-label="Your name (optional)">
+      <label class="btn" id="addBtn" for="pick">Add photos</label>
+      <input id="pick" type="file" accept="image/*" multiple hidden>
+      <div class="bar" id="bar" hidden><i id="barFill"></i></div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </div>
+  </header>
+  <main id="grid" class="grid" aria-label="Photos"></main>
+  <div id="empty" class="empty" hidden><strong>No photos yet</strong>Add the first one. Everyone with this link will see it here.</div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo">
+  <div class="lb-top"><span id="lbPos"></span><button class="icon" id="lbClose" aria-label="Close">✕</button></div>
+  <div class="lb-stage" id="lbStage">
+    <button class="icon nav prev" id="lbPrev" aria-label="Previous photo">‹</button>
+    <img id="lbImg" alt="">
+    <button class="icon nav next" id="lbNext" aria-label="Next photo">›</button>
+  </div>
+  <div class="lb-bottom"><span id="lbBy"></span><a id="lbOpen" href="#" target="_blank" rel="noopener">Open full size</a></div>
+</div>
+
+<script>
+(() => {
+  const SB = "https://yzsstfoeetrqcipyviqv.supabase.co";
+  const KEY = "sb_publishable_XgxZOI8PNhMPxu6xan0ynQ_keCLLsH9";
+  const PUB = SB + "/storage/v1/object/public/event-photos/";
+  const UPLOAD = SB + "/functions/v1/event-photo-upload";
+  const FULL_PX = 2048, THUMB_PX = 640;
+
+  // Wall from the address: /photos/ is the one wall for all events (founder, Oct 28: "one page is fine").
+  // /photos/#<slug> still opens a separate wall if one is ever made.
+  const slug = (location.hash.slice(1) || new URLSearchParams(location.search).get("w") || "all-events").toLowerCase().trim();
+  const $ = (id) => document.getElementById(id);
+  let photos = [];            // newest first, from the server
+  const pending = new Map();  // local previews while uploading
+  let wall = null;
+
+  try { $("who").value = localStorage.getItem("ep-name") || ""; } catch {}
+  $("who").addEventListener("change", () => { try { localStorage.setItem("ep-name", $("who").value.trim()); } catch {} });
+
+  async function load() {
+    if (!slug) return showMissing();
+    try {
+      const r = await fetch(SB + "/rest/v1/rpc/public_event_photo_wall", {
+        method: "POST",
+        headers: { apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({ p_slug: slug }),
+      });
+      if (!r.ok) throw new Error(r.status);
+      const w = await r.json();
+      if (!w) return showMissing();
+      wall = w;
+      $("title").textContent = w.title;
+      document.title = w.title + " · Photos";
+      $("sub").textContent = w.subtitle || "";
+      $("actions").hidden = !w.uploads_open;
+      if (!w.uploads_open) $("sub").textContent = (w.subtitle ? w.subtitle + " " : "") + "This wall is closed to new photos.";
+      const ids = new Set(w.photos.map((p) => p.id));
+      for (const id of [...pending.keys()]) if (ids.has(id)) pending.delete(id);
+      photos = w.photos;
+      render();
+    } catch (e) {
+      if (!wall) { $("title").textContent = "Photos could not load"; $("sub").textContent = "Check your connection and refresh the page."; }
+    }
+  }
+
+  function showMissing() {
+    $("title").textContent = "No photo wall here";
+    $("sub").textContent = "This link is missing part of its address. Ask the host for the full link.";
+  }
+
+  function render() {
+    const grid = $("grid");
+    const items = [...pending.values(), ...photos];
+    $("count").textContent = photos.length ? photos.length + (photos.length === 1 ? " photo" : " photos") : "";
+    $("empty").hidden = items.length > 0 || !wall;
+    const have = new Map([...grid.children].map((el) => [el.dataset.id, el]));
+    const frag = document.createDocumentFragment();
+    items.forEach((p) => {
+      let el = have.get(p.id);
+      if (el && el.classList.contains("pending") !== !!p.local) el = null;
+      if (!el) {
+        el = document.createElement("button");
+        el.type = "button";
+        el.className = "tile" + (p.local ? " pending" : "");
+        el.dataset.id = p.id;
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.alt = p.by ? "Photo by " + p.by : "Event photo";
+        if (p.w && p.h) { img.width = p.w; img.height = p.h; }
+        img.src = p.local ? p.local : PUB + p.thumb;
+        el.appendChild(img);
+        if (p.by) { const by = document.createElement("span"); by.className = "by"; by.textContent = p.by; el.appendChild(by); }
+        if (!p.local) el.addEventListener("click", () => openAt(photos.findIndex((x) => x.id === p.id)));
+      }
+      frag.appendChild(el);
+    });
+    grid.replaceChildren(frag);
+  }
+
+  // Lightbox
+  let at = -1;
+  function openAt(i) {
+    if (i < 0) return;
+    at = i; $("lb").hidden = false; document.body.style.overflow = "hidden"; show(); $("lbClose").focus();
+  }
+  function show() {
+    const p = photos[at];
+    $("lbImg").src = PUB + p.thumb;
+    const full = new Image(); full.onload = () => { if (photos[at] === p) $("lbImg").src = full.src; }; full.src = PUB + p.path;
+    $("lbImg").alt = p.by ? "Photo by " + p.by : "Event photo";
+    $("lbPos").textContent = (at + 1) + " of " + photos.length;
+    $("lbBy").textContent = p.by ? "By " + p.by : "";
+    $("lbOpen").href = PUB + p.path;
+  }
+  function step(d) { if (at < 0) return; at = (at + d + photos.length) % photos.length; show(); }
+  function close() { $("lb").hidden = true; document.body.style.overflow = ""; at = -1; }
+  $("lbClose").onclick = close;
+  $("lbPrev").onclick = () => step(-1);
+  $("lbNext").onclick = () => step(1);
+  $("lbStage").addEventListener("click", (e) => { if (e.target.id === "lbStage") close(); });
+  document.addEventListener("keydown", (e) => {
+    if ($("lb").hidden) return;
+    if (e.key === "Escape") close(); else if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
+  });
+  let sx = null;
+  $("lbStage").addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
+  $("lbStage").addEventListener("touchend", (e) => {
+    if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+  });
+
+  // Upload: shrink in the browser (fast on phone data), then send the photo and a small preview.
+  async function decode(file) {
+    if ("createImageBitmap" in window) {
+      try { return await createImageBitmap(file, { imageOrientation: "from-image" }); } catch {}
+    }
+    const url = URL.createObjectURL(file);
+    try {
+      const img = new Image(); img.src = url; await img.decode(); return img;
+    } finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  }
+  function shrink(src, max, q) {
+    const w0 = src.width, h0 = src.height, k = Math.min(1, max / Math.max(w0, h0));
+    const c = document.createElement("canvas");
+    c.width = Math.round(w0 * k); c.height = Math.round(h0 * k);
+    c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
+    return new Promise((res, rej) => c.toBlob((b) => b ? res({ blob: b, w: c.width, h: c.height }) : rej(new Error("encode")), "image/jpeg", q));
+  }
+  async function sendOne(file, name) {
+    const src = await decode(file);
+    const full = await shrink(src, FULL_PX, 0.86);
+    const thumb = await shrink(src, THUMB_PX, 0.8);
+    if (src.close) src.close();
+    const tempId = "local-" + Math.random().toString(36).slice(2);
+    const local = URL.createObjectURL(thumb.blob);
+    pending.set(tempId, { id: tempId, local, w: thumb.w, h: thumb.h, by: name || null });
+    render();
+    const fd = new FormData();
+    fd.append("slug", slug);
+    fd.append("full", full.blob, "photo.jpg");
+    fd.append("thumb", thumb.blob, "thumb.jpg");
+    fd.append("w", full.w); fd.append("h", full.h);
+    if (name) fd.append("name", name);
+    let res;
+    try {
+      const r = await fetch(UPLOAD, { method: "POST", body: fd });
+      res = await r.json().catch(() => ({ ok: false, error: "upload failed" }));
+    } catch { res = { ok: false, error: "no connection" }; }
+    pending.delete(tempId);
+    if (res.ok) {
+      pending.set(res.id, { id: res.id, local, w: thumb.w, h: thumb.h, by: name || null });
+      photos = photos.filter((p) => p.id !== res.id);
+    } else { URL.revokeObjectURL(local); }
+    render();
+    if (!res.ok) throw new Error(res.error || "upload failed");
+  }
+
+  $("pick").addEventListener("change", async (e) => {
+    const files = [...e.target.files].filter((f) => f.type.startsWith("image/") || /\.(heic|heif)$/i.test(f.name));
+    e.target.value = "";
+    if (!files.length) return;
+    const name = $("who").value.trim();
+    try { localStorage.setItem("ep-name", name); } catch {}
+    const btn = $("addBtn"), st = $("status");
+    btn.setAttribute("aria-disabled", "true"); btn.style.pointerEvents = "none"; btn.style.opacity = ".55";
+    $("bar").hidden = false; st.className = "status";
+    let done = 0, failed = 0, lastErr = "";
+    const queue = files.slice();
+    const tick = () => {
+      $("barFill").style.width = Math.round(((done + failed) / files.length) * 100) + "%";
+      st.textContent = "Adding " + Math.min(done + failed + 1, files.length) + " of " + files.length + "…";
+    };
+    tick();
+    const worker = async () => {
+      while (queue.length) {
+        const f = queue.shift();
+        try { await sendOne(f, name); done++; }
+        catch (err) {
+          failed++;
+          lastErr = /decode|encode|source|image/i.test(String(err && err.message)) || (err && err.name === "EncodingError")
+            ? "This browser can't read that photo type. Try again from your phone's photo library."
+            : String((err && err.message) || "upload failed");
+        }
+        tick();
+      }
+    };
+    await Promise.all([worker(), worker()]);
+    $("bar").hidden = true;
+    btn.removeAttribute("aria-disabled"); btn.style.pointerEvents = ""; btn.style.opacity = "";
+    if (!failed) { st.className = "status ok"; st.textContent = done === 1 ? "Your photo is on the wall." : "Your " + done + " photos are on the wall."; }
+    else { st.className = "status bad"; st.textContent = (done ? done + " added, " : "") + failed + " not added. " + lastErr.charAt(0).toUpperCase() + lastErr.slice(1); }
+    load();
+  });
+
+  load();
+  // New photos from other guests appear without a refresh.
+  setInterval(() => { if (!document.hidden && $("lb").hidden) load(); }, 20000);
+  window.addEventListener("hashchange", () => location.reload());
+})();
+</script>
+</body>
+</html>
