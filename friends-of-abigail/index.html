@@ -171,8 +171,9 @@ details.rules li { margin-bottom: 8px; }
 
 <div class="wrap">
 <section id="vip">
-  <p>My events fill up fast. Get on the list and you'll hear about the next one before anyone else, with first pick of the seats.</p>
+  <p>Next year the retreat comes to Dallas, and I'm already planning some fun. My events fill up fast. Get on the list and you'll hear about the next one before anyone else, with first pick of the seats.</p>
   <p class="hint">The patch contest is closed. Thanks to everyone who entered!</p>
+  <p>Missed the photos from New Orleans? <a href="https://events.abigaildavisteam.com/photos/">See them all and add yours</a>.</p>
 </section>
 
 
@@ -185,7 +186,7 @@ details.rules li { margin-bottom: 8px; }
       <div><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
     </div>
     <div><label for="f-street">Best mailing address</label><input id="f-street" name="street" autocomplete="street-address" placeholder="Street, city, state, ZIP" required></div>
-    <div><label for="f-bmonth">Birthday <small>(optional, month and day)</small></label><div style="display:grid;grid-template-columns:3fr 2fr;gap:10px"><select id="f-bmonth" name="bmonth" aria-label="Birthday month"><option value="">Month</option><option value="01">January</option><option value="02">February</option><option value="03">March</option><option value="04">April</option><option value="05">May</option><option value="06">June</option><option value="07">July</option><option value="08">August</option><option value="09">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select><select id="f-bday" name="bday" aria-label="Birthday day"><option value="">Day</option><option value="01">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select></div></div>
+    <div><label for="f-bmonth">Birthday <small>(month and day, no year)</small></label><div style="display:grid;grid-template-columns:3fr 2fr;gap:10px"><select id="f-bmonth" name="bmonth" aria-label="Birthday month" required><option value="">Month</option><option value="01">January</option><option value="02">February</option><option value="03">March</option><option value="04">April</option><option value="05">May</option><option value="06">June</option><option value="07">July</option><option value="08">August</option><option value="09">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select><select id="f-bday" name="bday" aria-label="Birthday day" required><option value="">Day</option><option value="01">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select></div></div>
     <div class="quiz"><label for="f-dallas">What do you think of first when you think of Dallas?</label><textarea id="f-dallas" name="dallas" maxlength="500"></textarea></div>
     <p class="form-error" id="formError"></p>
     <button type="submit" class="btn-primary" id="submitBtn">Count me in</button>
@@ -193,7 +194,7 @@ details.rules li { margin-bottom: 8px; }
 
   <div class="done" id="done">
     <h2>You're on the VIP list!</h2>
-    <p>You'll hear about my next events first.</p>
+    <p>You'll hear about my next events first. And don't miss the <a href="https://events.abigaildavisteam.com/photos/">New Orleans photos</a>.</p>
     <div class="reveal">
       <p class="yours" id="yours"></p>
       <p class="label">The correct answer</p>
@@ -242,8 +243,8 @@ details.rules li { margin-bottom: 8px; }
   f.addEventListener('submit', function(e){
     e.preventDefault(); err.style.display='none';
     var bm=v('f-bmonth'), bd=v('f-bday'); var d={p_name:v('f-name'), p_email:v('f-email'), p_street:v('f-street'), p_dallas:v('f-dallas'), p_birthday:(bm&&bd)?(bm+'-'+bd):null, p_source:'nola-2026'};
-    if(!d.p_name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.p_email)||d.p_street.length<10){
-      show('Please fill in your name, email and full mailing address.'); return;
+    if(!d.p_name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.p_email)||d.p_street.length<10||!d.p_birthday){
+      show('Please fill in your name, email, full mailing address and birthday (month and day).'); return;
     }
     btn.disabled=true; btn.textContent='Saving...';
     fetch(U,{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'},body:JSON.stringify(d)})
