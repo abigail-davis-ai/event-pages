@@ -166,28 +166,15 @@ details.rules li { margin-bottom: 8px; }
 <div class="hero-text">
   <p class="eyebrow">Thanks for coming out in New Orleans!</p>
   <h1>#FriendsOfAbigail</h1>
-  <p class="hero-meta"><strong>VIP early access</strong> to my next events, plus a little contest</p>
+  <p class="hero-meta"><strong>VIP early access</strong> to my next events</p>
 </div>
 
 <div class="wrap">
 <section id="vip">
   <p>My events fill up fast. Get on the list and you'll hear about the next one before anyone else, with first pick of the seats.</p>
-  <p>And while you're here: show off your patch and you could win.</p>
-  <div class="prize-grid">
-    <div class="prize"><p class="amt">$100</p><p>gift card for one winner</p></div>
-    <div class="prize"><p class="amt">5</p><p>runners-up win a Compass tote bag</p></div>
-  </div>
+  <p class="hint">The patch contest is closed. Thanks to everyone who entered!</p>
 </section>
 
-<section id="enter">
-  <h2>How to enter</h2>
-  <ol class="steps">
-    <li><span>Take a picture with your patch(es).</span></li>
-    <li><span>Post it on Instagram. Tag me, <span class="tag">@abigaildavisrealtor</span>, and use <span class="tag">#FriendsOfAbigail</span>.</span></li>
-    <li><span>Fill out the form below, so I can mail your prize if you win.</span></li>
-  </ol>
-  <p class="hint" style="margin-top:14px;">Post by Friday, October 30.</p>
-</section>
 
 <section id="join">
   <form id="vipForm" novalidate>
@@ -198,6 +185,7 @@ details.rules li { margin-bottom: 8px; }
       <div><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
     </div>
     <div><label for="f-street">Best mailing address</label><input id="f-street" name="street" autocomplete="street-address" placeholder="Street, city, state, ZIP" required></div>
+    <div><label for="f-bmonth">Birthday <small>(optional, month and day)</small></label><div style="display:grid;grid-template-columns:3fr 2fr;gap:10px"><select id="f-bmonth" name="bmonth" aria-label="Birthday month"><option value="">Month</option><option value="01">January</option><option value="02">February</option><option value="03">March</option><option value="04">April</option><option value="05">May</option><option value="06">June</option><option value="07">July</option><option value="08">August</option><option value="09">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select><select id="f-bday" name="bday" aria-label="Birthday day"><option value="">Day</option><option value="01">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select></div></div>
     <div class="quiz"><label for="f-dallas">What do you think of first when you think of Dallas?</label><textarea id="f-dallas" name="dallas" maxlength="500"></textarea></div>
     <p class="form-error" id="formError"></p>
     <button type="submit" class="btn-primary" id="submitBtn">Count me in</button>
@@ -205,7 +193,7 @@ details.rules li { margin-bottom: 8px; }
 
   <div class="done" id="done">
     <h2>You're on the VIP list!</h2>
-    <p>You'll hear about my next events first. Don't forget to post your patch picture and tag me.</p>
+    <p>You'll hear about my next events first.</p>
     <div class="reveal">
       <p class="yours" id="yours"></p>
       <p class="label">The correct answer</p>
@@ -216,7 +204,7 @@ details.rules li { margin-bottom: 8px; }
 
 <section id="rules">
   <details class="rules">
-    <summary>Official contest rules</summary>
+    <summary>Patch contest rules (closed Oct 30)</summary>
     <ol>
       <li><strong>No purchase necessary.</strong> Buying anything does not improve your chance of winning.</li>
       <li><strong>Who can enter:</strong> anyone 18 or older living in the United States who attended one of my New Orleans events, October 27&ndash;29, 2026.</li>
@@ -247,13 +235,13 @@ details.rules li { margin-bottom: 8px; }
 </div>
 <script>
 (function(){
-  var K='sb_publishable_XgxZOI8PNhMPxu6xan0ynQ_keCLLsH9', U='https://yzsstfoeetrqcipyviqv.supabase.co/rest/v1/rpc/friends_vip_signup';
+  var K='sb_publishable_XgxZOI8PNhMPxu6xan0ynQ_keCLLsH9', U='https://yzsstfoeetrqcipyviqv.supabase.co/rest/v1/rpc/friends_vip_signup_v2';
   var f=document.getElementById('vipForm'), err=document.getElementById('formError'), btn=document.getElementById('submitBtn');
   function v(id){ return document.getElementById(id).value.trim(); }
   function show(msg){ err.textContent=msg; err.style.display='block'; }
   f.addEventListener('submit', function(e){
     e.preventDefault(); err.style.display='none';
-    var d={p_name:v('f-name'), p_email:v('f-email'), p_street:v('f-street'), p_street2:'', p_city:'', p_state:'', p_zip:'', p_handle:'', p_dallas:v('f-dallas'), p_source:'nola-2026'};
+    var bm=v('f-bmonth'), bd=v('f-bday'); var d={p_name:v('f-name'), p_email:v('f-email'), p_street:v('f-street'), p_dallas:v('f-dallas'), p_birthday:(bm&&bd)?(bm+'-'+bd):null, p_source:'nola-2026'};
     if(!d.p_name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.p_email)||d.p_street.length<10){
       show('Please fill in your name, email and full mailing address.'); return;
     }
